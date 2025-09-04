@@ -20,9 +20,6 @@ public class ProductService(IMapper mapper, AppDbContext context) : IProductServ
             .Include(p => p.Category)
             .ToListAsync(cancellationToken);
 
-        if(products == null)
-            return Enumerable.Empty<ProductResponseDto>();
-
         return _mapper.Map<IEnumerable<ProductResponseDto>>(products);
     }
     public async Task<ProductResponseDto?> GetProductByIdAsync(int id, CancellationToken cancellationToken = default)

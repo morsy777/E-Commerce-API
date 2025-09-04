@@ -8,7 +8,6 @@ namespace E_Commerce.DAL.Models
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
 
-
         public ShoppingCart ShoppingCart { get; set; } = default!;
 
         public ICollection<Order> Orders { get; set; } = new List<Order>();

@@ -13,9 +13,7 @@ namespace E_Commerce.DAL.Models
         public string Status { get; set; } = string.Empty;
 
         public int UserId { get; set; }
-        public ApplicationUser User { get; set; } = default!;
-
-        
+        public ApplicationUser User { get; set; } = default!;        
         public ICollection<OrderItem> OrderItems { get; set; }  = new List<OrderItem>();    
     }
 }

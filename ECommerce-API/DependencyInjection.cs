@@ -20,6 +20,8 @@ public static class DependencyInjection
 
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<IOrderService, OrderService>();
+        services.AddScoped<IShoppingCartService,ShoppingCartService>();
 
         return services;
     }
@@ -44,6 +46,7 @@ public static class DependencyInjection
     {
         services.AddAutoMapper(typeof(ProductMap).Assembly);
         services.AddAutoMapper(typeof(CategoryMap).Assembly);
+        services.AddAutoMapper(typeof(OrderMap).Assembly);
 
         return services;
     }
