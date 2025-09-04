@@ -15,7 +15,6 @@ public class ProductRequestDtoValidator : AbstractValidator<ProductRequestDto>
             .NotNull()
             .NotEmpty();
 
-
         RuleFor(x => x.Price)
             .NotNull()
             .NotEmpty()

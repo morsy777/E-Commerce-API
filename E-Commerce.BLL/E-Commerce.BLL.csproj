@@ -9,6 +9,12 @@
 
   <ItemGroup>
     <Compile Remove="Class1.cs" />
+    <Compile Remove="Mapping\NewFile1.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Mapping\NewFile1.txt" />
+    <None Remove="Services\NewFile1.txt" />
   </ItemGroup>
 
   <ItemGroup>

@@ -20,12 +20,15 @@ public class ProductService(IMapper mapper, AppDbContext context) : IProductServ
             .Include(p => p.Category)
             .ToListAsync(cancellationToken);
 
+        if(products == null)
+            return Enumerable.Empty<ProductResponseDto>();
+
         return _mapper.Map<IEnumerable<ProductResponseDto>>(products);
     }
     public async Task<ProductResponseDto?> GetProductByIdAsync(int id, CancellationToken cancellationToken = default)
     {
         var product = await _context.Products
-            .Include(x => x.Category)
+            .Include(x => x.Category) 
             .FirstOrDefaultAsync(x => x.ProductId == id);
 
         return product is null ? null : _mapper.Map<ProductResponseDto>(product);   
@@ -33,21 +36,19 @@ public class ProductService(IMapper mapper, AppDbContext context) : IProductServ
 
     public async Task<ProductResponseDto> AddAsync(ProductRequestDto productDto, CancellationToken cancellationToken = default)
     {
-        var product = _mapper.Map<Product>(productDto);
+        var newProduct = _mapper.Map<Product>(productDto);
 
-        if (productDto.Image != null)
+        if (productDto.Image is not null)
         {
             using var ms = new MemoryStream();
             await productDto.Image.CopyToAsync(ms);
-            product.Image = ms.ToArray();
+            newProduct.Image = ms.ToArray();
         }
 
-        await _context.Products.AddAsync(product, cancellationToken);
+        await _context.Products.AddAsync(newProduct, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
-        await _context.Entry(product).Reference(p => p.Category).LoadAsync(cancellationToken);
-
-        return _mapper.Map<ProductResponseDto>(product);
+        return _mapper.Map<ProductResponseDto>(newProduct);
     }
     
     public async Task<bool> UpdateAsync(int id, ProductRequestDto productDto, CancellationToken cancellationToken = default)
@@ -69,13 +70,17 @@ public class ProductService(IMapper mapper, AppDbContext context) : IProductServ
         _context.Products.Update(product);
         await _context.SaveChangesAsync(cancellationToken);
 
+        await _context.Entry(product).Reference(p => p.Category).LoadAsync(cancellationToken);
+
         return true;
     }
 
     public async Task<bool> DeleteAsync(int id, CancellationToken cancellationToken = default)
     {
         var product = await _context.Products.FindAsync(id, cancellationToken);
-        if (product is null) return false;
+
+        if (product is null)
+            return false;
 
         _context.Products.Remove(product);
         await _context.SaveChangesAsync(cancellationToken);
