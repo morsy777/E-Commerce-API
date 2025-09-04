@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using E_Commerce.DAL.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using WebApplication3.Models;
 
-namespace WebApplication3.Configurations
+namespace E_Commerce.DAL.Configurations
 {
     public class CategoryConfiguration : IEntityTypeConfiguration<Category>
     {

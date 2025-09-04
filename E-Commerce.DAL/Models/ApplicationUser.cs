@@ -1,6 +1,8 @@
-﻿namespace WebApplication3.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace E_Commerce.DAL.Models
 {
-    public class ApplicationUser
+    public class ApplicationUser : IdentityUser
     {
         public int UserId { get; set; }
         public string FirstName { get; set; } = string.Empty;

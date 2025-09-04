@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WebApplication3.Models;
 
-namespace WebApplication3.Data
+namespace E_Commerce.DAL.Models
 {
     public class AppDbContext : DbContext
     {
@@ -15,11 +14,6 @@ namespace WebApplication3.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Review> Reviews { get; set; }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Data Source=DESKTOP-UPTBD4E\\SQLEXPRESS;Initial Catalog=Project;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
-
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

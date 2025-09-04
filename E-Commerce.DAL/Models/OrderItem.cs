@@ -1,9 +1,13 @@
-﻿namespace WebApplication3.Models
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace E_Commerce.DAL.Models
 {
     public class OrderItem
     {
         public int OrderItemId { get; set; }
         public int Quantity { get; set; }
+
+        [Precision(18, 2)]
         public decimal UnitPrice { get; set; }
 
         public int OrderId { get; set; }

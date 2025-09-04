@@ -1,4 +1,4 @@
-﻿namespace WebApplication3.Models
+﻿namespace E_Commerce.DAL.Models
 {
     public class Review
     {
