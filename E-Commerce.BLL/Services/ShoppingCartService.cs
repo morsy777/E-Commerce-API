@@ -15,42 +15,42 @@ public class ShoppingCartService(AppDbContext context) : IShoppingCartService
     public async Task<bool> AddProductToCartAsync(int userId, int productId, int quantity,
         CancellationToken cancellationToken = default)
     {
-        if (!_context.Products.Any(p => p.ProductId == productId))
-            return false;
+        //if (!_context.Products.Any(p => p.ProductId == productId))
+        //    return false;
 
-        var shoppingCart = await _context.ShoppingCarts
-            .Include(c => c.CartItems)
-            .FirstOrDefaultAsync(c => c.UserId == userId, cancellationToken);
+        //var shoppingCart = await _context.ShoppingCarts
+        //    .Include(c => c.CartItems)
+        //    .FirstOrDefaultAsync(c => c.UserId == userId, cancellationToken);
 
-        if(shoppingCart is null)
-        {
-            shoppingCart = new ShoppingCart()
-            {
-                UserId = userId,
-                CartItems = new List<CartItem>()
-            };
+        //if(shoppingCart is null)
+        //{
+        //    shoppingCart = new ShoppingCart()
+        //    {
+        //        UserId = userId,
+        //        CartItems = new List<CartItem>()
+        //    };
 
-            _context.ShoppingCarts.Add(shoppingCart);
-        }
+        //    _context.ShoppingCarts.Add(shoppingCart);
+        //}
 
-        var existingCartProduct = shoppingCart.CartItems.FirstOrDefault(ci => ci.ProductId == productId);
+        //var existingCartProduct = shoppingCart.CartItems.FirstOrDefault(ci => ci.ProductId == productId);
 
-        if (existingCartProduct is not null)
-        {
-            existingCartProduct.Quantity += quantity;
-        }
-        else
-        {
-            var newCartProduct = new CartItem()
-            {
-                ProductId = productId,
-                Quantity = quantity,
-            };
+        //if (existingCartProduct is not null)
+        //{
+        //    existingCartProduct.Quantity += quantity;
+        //}
+        //else
+        //{
+        //    var newCartProduct = new CartItem()
+        //    {
+        //        ProductId = productId,
+        //        Quantity = quantity,
+        //    };
 
-            shoppingCart.CartItems.Add(newCartProduct);
-        }
+        //    shoppingCart.CartItems.Add(newCartProduct);
+        //}
 
-        await _context.SaveChangesAsync(cancellationToken);
+        //await _context.SaveChangesAsync(cancellationToken);
         return true;
     }
 

@@ -1,3 +1,5 @@
+using E_Commerce.API.Seed;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -15,6 +17,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+//await DbSeeder.SeedAsync(app.Services);
 
 app.MapControllers();
 

@@ -24,20 +24,19 @@ namespace E_Commerce.DAL.Migrations
 
             modelBuilder.Entity("E_Commerce.DAL.Models.ApplicationUser", b =>
                 {
-                    b.Property<int>("UserId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
@@ -46,9 +45,6 @@ namespace E_Commerce.DAL.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -62,10 +58,12 @@ namespace E_Commerce.DAL.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("NormalizedEmail")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedUserName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -83,83 +81,20 @@ namespace E_Commerce.DAL.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
-                    b.HasKey("UserId");
+                    b.HasKey("Id");
 
-                    b.ToTable("ApplicationUsers");
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
 
-                    b.HasData(
-                        new
-                        {
-                            UserId = 1,
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "54b4bae0-e64f-4039-9a40-754f9625e2ac",
-                            EmailConfirmed = false,
-                            FirstName = "Alice",
-                            Id = "778cf1e6-42ca-4587-9277-f1450aeb1155",
-                            LastName = "Smith",
-                            LockoutEnabled = false,
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "9f05a182-d981-4586-8533-6a65bd87cfb4",
-                            TwoFactorEnabled = false
-                        },
-                        new
-                        {
-                            UserId = 2,
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "910fe69d-b617-45e2-9499-f78fb7d7e6ff",
-                            EmailConfirmed = false,
-                            FirstName = "Bob",
-                            Id = "9d04c578-42c5-4c07-a4dc-5831b3e5f5da",
-                            LastName = "Johnson",
-                            LockoutEnabled = false,
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "99ec033f-e2f5-4272-99f1-f0a2e90db2a5",
-                            TwoFactorEnabled = false
-                        },
-                        new
-                        {
-                            UserId = 3,
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "f5d98e89-0879-45e1-99a0-312536943faa",
-                            EmailConfirmed = false,
-                            FirstName = "Charlie",
-                            Id = "514351fc-c267-4c79-9edb-357baa25e3e3",
-                            LastName = "Brown",
-                            LockoutEnabled = false,
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "53361b4c-bb07-4396-b7a6-5e1cf191b692",
-                            TwoFactorEnabled = false
-                        },
-                        new
-                        {
-                            UserId = 4,
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "307435ce-780b-4764-aad8-78cf80e1dbc2",
-                            EmailConfirmed = false,
-                            FirstName = "Diana",
-                            Id = "48eebbb4-5c85-4325-acbf-76c05ca23374",
-                            LastName = "Wilson",
-                            LockoutEnabled = false,
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "e8ba192f-b9ef-404e-a563-c57d403f3669",
-                            TwoFactorEnabled = false
-                        },
-                        new
-                        {
-                            UserId = 5,
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "fb46f21a-ee6b-4bfa-b0ab-35574f3b22c4",
-                            EmailConfirmed = false,
-                            FirstName = "Ethan",
-                            Id = "2b687354-95de-487b-8317-74ab26e0bfc3",
-                            LastName = "Taylor",
-                            LockoutEnabled = false,
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "3b1fc4ee-fa74-49aa-ba99-f2610deade15",
-                            TwoFactorEnabled = false
-                        });
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("E_Commerce.DAL.Models.CartItem", b =>
@@ -186,43 +121,6 @@ namespace E_Commerce.DAL.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("CartItems");
-
-                    b.HasData(
-                        new
-                        {
-                            CartItemId = 1,
-                            CartId = 1,
-                            ProductId = 1,
-                            Quantity = 1
-                        },
-                        new
-                        {
-                            CartItemId = 2,
-                            CartId = 2,
-                            ProductId = 2,
-                            Quantity = 2
-                        },
-                        new
-                        {
-                            CartItemId = 3,
-                            CartId = 3,
-                            ProductId = 3,
-                            Quantity = 3
-                        },
-                        new
-                        {
-                            CartItemId = 4,
-                            CartId = 4,
-                            ProductId = 4,
-                            Quantity = 1
-                        },
-                        new
-                        {
-                            CartItemId = 5,
-                            CartId = 5,
-                            ProductId = 5,
-                            Quantity = 4
-                        });
                 });
 
             modelBuilder.Entity("E_Commerce.DAL.Models.Category", b =>
@@ -248,38 +146,6 @@ namespace E_Commerce.DAL.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            CategoryId = 1,
-                            Prefix = "Electronic devices",
-                            Title = "Electronics"
-                        },
-                        new
-                        {
-                            CategoryId = 2,
-                            Prefix = "Tech accessories",
-                            Title = "Accessories"
-                        },
-                        new
-                        {
-                            CategoryId = 3,
-                            Prefix = "Home and office furniture",
-                            Title = "Furniture"
-                        },
-                        new
-                        {
-                            CategoryId = 4,
-                            Prefix = "Educational and entertainment books",
-                            Title = "Books"
-                        },
-                        new
-                        {
-                            CategoryId = 5,
-                            Prefix = "Apparel and fashion",
-                            Title = "Clothing"
-                        });
                 });
 
             modelBuilder.Entity("E_Commerce.DAL.Models.Order", b =>
@@ -301,56 +167,15 @@ namespace E_Commerce.DAL.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("OrderId");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("Orders");
-
-                    b.HasData(
-                        new
-                        {
-                            OrderId = 1,
-                            OrderDate = new DateTime(2025, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Status = "Completed",
-                            TotalAmount = 250m,
-                            UserId = 1
-                        },
-                        new
-                        {
-                            OrderId = 2,
-                            OrderDate = new DateTime(2025, 9, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Status = "Pending",
-                            TotalAmount = 120m,
-                            UserId = 2
-                        },
-                        new
-                        {
-                            OrderId = 3,
-                            OrderDate = new DateTime(2025, 9, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Status = "Shipped",
-                            TotalAmount = 350m,
-                            UserId = 3
-                        },
-                        new
-                        {
-                            OrderId = 4,
-                            OrderDate = new DateTime(2025, 9, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Status = "Cancelled",
-                            TotalAmount = 90m,
-                            UserId = 4
-                        },
-                        new
-                        {
-                            OrderId = 5,
-                            OrderDate = new DateTime(2025, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Status = "Processing",
-                            TotalAmount = 500m,
-                            UserId = 5
-                        });
                 });
 
             modelBuilder.Entity("E_Commerce.DAL.Models.OrderItem", b =>
@@ -381,48 +206,6 @@ namespace E_Commerce.DAL.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("OrderItems");
-
-                    b.HasData(
-                        new
-                        {
-                            OrderItemId = 1,
-                            OrderId = 1,
-                            ProductId = 1,
-                            Quantity = 2,
-                            UnitPrice = 50m
-                        },
-                        new
-                        {
-                            OrderItemId = 2,
-                            OrderId = 2,
-                            ProductId = 2,
-                            Quantity = 1,
-                            UnitPrice = 120m
-                        },
-                        new
-                        {
-                            OrderItemId = 3,
-                            OrderId = 3,
-                            ProductId = 3,
-                            Quantity = 3,
-                            UnitPrice = 100m
-                        },
-                        new
-                        {
-                            OrderItemId = 4,
-                            OrderId = 4,
-                            ProductId = 4,
-                            Quantity = 1,
-                            UnitPrice = 90m
-                        },
-                        new
-                        {
-                            OrderItemId = 5,
-                            OrderId = 5,
-                            ProductId = 5,
-                            Quantity = 5,
-                            UnitPrice = 100m
-                        });
                 });
 
             modelBuilder.Entity("E_Commerce.DAL.Models.Product", b =>
@@ -482,8 +265,9 @@ namespace E_Commerce.DAL.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ReviewId");
 
@@ -492,48 +276,6 @@ namespace E_Commerce.DAL.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Reviews");
-
-                    b.HasData(
-                        new
-                        {
-                            ReviewId = 1,
-                            Comment = "Excellent product!",
-                            ProductId = 1,
-                            Rating = 5,
-                            UserId = 1
-                        },
-                        new
-                        {
-                            ReviewId = 2,
-                            Comment = "Good value.",
-                            ProductId = 2,
-                            Rating = 4,
-                            UserId = 2
-                        },
-                        new
-                        {
-                            ReviewId = 3,
-                            Comment = "Average quality.",
-                            ProductId = 3,
-                            Rating = 3,
-                            UserId = 3
-                        },
-                        new
-                        {
-                            ReviewId = 4,
-                            Comment = "Very comfortable.",
-                            ProductId = 4,
-                            Rating = 5,
-                            UserId = 4
-                        },
-                        new
-                        {
-                            ReviewId = 5,
-                            Comment = "Well built desk.",
-                            ProductId = 5,
-                            Rating = 4,
-                            UserId = 5
-                        });
                 });
 
             modelBuilder.Entity("E_Commerce.DAL.Models.ShoppingCart", b =>
@@ -544,8 +286,9 @@ namespace E_Commerce.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartId"));
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("CartId");
 
@@ -553,33 +296,139 @@ namespace E_Commerce.DAL.Migrations
                         .IsUnique();
 
                     b.ToTable("ShoppingCarts");
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            CartId = 1,
-                            UserId = 1
-                        },
-                        new
-                        {
-                            CartId = 2,
-                            UserId = 2
-                        },
-                        new
-                        {
-                            CartId = 3,
-                            UserId = 3
-                        },
-                        new
-                        {
-                            CartId = 4,
-                            UserId = 4
-                        },
-                        new
-                        {
-                            CartId = 5,
-                            UserId = 5
-                        });
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
                 });
 
             modelBuilder.Entity("E_Commerce.DAL.Models.CartItem", b =>
@@ -670,6 +519,57 @@ namespace E_Commerce.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.HasOne("E_Commerce.DAL.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.HasOne("E_Commerce.DAL.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("E_Commerce.DAL.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("E_Commerce.DAL.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("E_Commerce.DAL.Models.ApplicationUser", b =>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography.Xml;
 
 namespace E_Commerce.DAL.Models
@@ -12,7 +13,7 @@ namespace E_Commerce.DAL.Models
         public decimal TotalAmount { get; set; }
         public string Status { get; set; } = string.Empty;
 
-        public int UserId { get; set; }
+        public string UserId { get; set; } = string.Empty; // string
         public ApplicationUser User { get; set; } = default!;        
         public ICollection<OrderItem> OrderItems { get; set; }  = new List<OrderItem>();    
     }

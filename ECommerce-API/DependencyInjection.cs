@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 
 namespace ECommerce_API;
 
@@ -18,10 +19,12 @@ public static class DependencyInjection
 
         services.AddAutoMapperConfigs();
 
+        services.AddAuthConfig();
+
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<IOrderService, OrderService>();
-        services.AddScoped<IShoppingCartService,ShoppingCartService>();
+        services.AddScoped<IShoppingCartService, ShoppingCartService>();
 
         return services;
     }
@@ -36,7 +39,7 @@ public static class DependencyInjection
 
     private static IServiceCollection AddFluentValidationConfigs(this IServiceCollection services)
     {
-        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());    
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddFluentValidationAutoValidation();
 
         return services;
@@ -47,6 +50,13 @@ public static class DependencyInjection
         services.AddAutoMapper(typeof(ProductMap).Assembly);
         services.AddAutoMapper(typeof(CategoryMap).Assembly);
         services.AddAutoMapper(typeof(OrderMap).Assembly);
+
+        return services;
+    }
+    private static IServiceCollection AddAuthConfig(this IServiceCollection services)
+    {
+        services.AddIdentity<ApplicationUser, IdentityRole>()
+            .AddEntityFrameworkStores<AppDbContext>();
 
         return services;
     }

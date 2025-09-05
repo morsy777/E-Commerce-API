@@ -21,13 +21,13 @@ namespace E_Commerce.DAL.Configurations
                    .HasForeignKey(r => r.ProductId);
 
            
-            builder.HasData(
-                new Review { ReviewId = 1, UserId = 1, ProductId = 1, Rating = 5, Comment = "Excellent product!" },
-                new Review { ReviewId = 2, UserId = 2, ProductId = 2, Rating = 4, Comment = "Good value." },
-                new Review { ReviewId = 3, UserId = 3, ProductId = 3, Rating = 3, Comment = "Average quality." },
-                new Review { ReviewId = 4, UserId = 4, ProductId = 4, Rating = 5, Comment = "Very comfortable." },
-                new Review { ReviewId = 5, UserId = 5, ProductId = 5, Rating = 4, Comment = "Well built desk." }
-            );
+            //builder.HasData(
+            //    new Review { ReviewId = 1, UserId = 1, ProductId = 1, Rating = 5, Comment = "Excellent product!" },
+            //    new Review { ReviewId = 2, UserId = 2, ProductId = 2, Rating = 4, Comment = "Good value." },
+            //    new Review { ReviewId = 3, UserId = 3, ProductId = 3, Rating = 3, Comment = "Average quality." },
+            //    new Review { ReviewId = 4, UserId = 4, ProductId = 4, Rating = 5, Comment = "Very comfortable." },
+            //    new Review { ReviewId = 5, UserId = 5, ProductId = 5, Rating = 4, Comment = "Well built desk." }
+            //);
         }
     }
 }

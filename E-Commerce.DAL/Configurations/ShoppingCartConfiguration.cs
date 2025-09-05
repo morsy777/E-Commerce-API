@@ -14,13 +14,13 @@ namespace E_Commerce.DAL.Configurations
                    .WithOne(u => u.ShoppingCart)
                    .HasForeignKey<ShoppingCart>(c => c.UserId);
 
-            builder.HasData(
-                new ShoppingCart { CartId = 1, UserId = 1 },
-                new ShoppingCart { CartId = 2, UserId = 2 },
-                new ShoppingCart { CartId = 3, UserId = 3 },
-                new ShoppingCart { CartId = 4, UserId = 4 },
-                new ShoppingCart { CartId = 5, UserId = 5 }
-            );
+            //builder.HasData(
+            //    new ShoppingCart { CartId = 1, UserId = 1 },
+            //    new ShoppingCart { CartId = 2, UserId = 2 },
+            //    new ShoppingCart { CartId = 3, UserId = 3 },
+            //    new ShoppingCart { CartId = 4, UserId = 4 },
+            //    new ShoppingCart { CartId = 5, UserId = 5 }
+            //);
         }
     }
 }
