@@ -26,7 +26,7 @@ namespace E_Commerce.API.Seed
             }
 
             // ✅ Admin User
-            ApplicationUser adminUser;
+            ApplicationUser? adminUser;
             if (!await userManager.Users.AnyAsync())
             {
                 adminUser = new ApplicationUser

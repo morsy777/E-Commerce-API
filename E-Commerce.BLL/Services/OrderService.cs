@@ -11,39 +11,44 @@ using System.Threading.Tasks;
 
 namespace E_Commerce.BLL.Services;
 
-public class OrderService(AppDbContext context, IMapper mapper) : IOrderService
+public class OrderService(AppDbContext context) : IOrderService
 {
     private readonly AppDbContext _context = context;
-    private readonly IMapper _mapper = mapper;
+    private readonly string _orderStatus = "Pending";
 
-    public async Task<IEnumerable<OrderResponseDto>> GetOrdersAsync(CancellationToken cancellationToken = default)
+    public async Task<bool> CheckoutAsync(string userId, CancellationToken cancellationToken)
     {
-        var orders = await _context.Orders
-              .Include(o => o.OrderItems)
-                .ThenInclude(i => i.Product)
-                .ThenInclude(p => p.Category)
-                .ToListAsync(cancellationToken); // If there is no orders then ToList will return empty list, 
+        var cart = await _context.ShoppingCarts
+            .Include(s => s.CartItems)
+                .ThenInclude(ci => ci.Product)
+                .FirstOrDefaultAsync(p => p.UserId == userId, cancellationToken);
 
-        return _mapper.Map<IEnumerable<OrderResponseDto>>(orders);
-    }
+        if(cart is null || !cart.CartItems.Any())
+            return false;
 
-    public Task<OrderResponseDto?> GetOrderByIdAsync(int id, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
+        var totalAmount = cart.CartItems.Sum(ci => ci.Quantity * ci.Product.Price);
 
-    public Task<OrderResponseDto> AddAsync(int userId, OrderRequestDto orderRequestDto, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
+        var newOrder = new Order 
+        { 
+            UserId = userId,
+            Status = _orderStatus,
+            OrderDate = DateTime.UtcNow,
+            TotalAmount = totalAmount,
 
-    public Task<bool> DeleteAsync(int id, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
+            OrderItems = cart.CartItems.Select(ci => new OrderItem
+            { 
+                ProductId = ci.ProductId,
+                Quantity = ci.Quantity,
+                UnitPrice = ci.Product.Price
+            }).ToList()
+        };
 
-    public Task<bool> DeleteOrdersAsync(CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
+        await _context.Orders.AddAsync(newOrder);
+
+        _context.CartItems.RemoveRange(cart.CartItems);
+
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return true;
     }
 }
