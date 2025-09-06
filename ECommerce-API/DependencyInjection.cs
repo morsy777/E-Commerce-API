@@ -25,6 +25,7 @@ public static class DependencyInjection
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<IShoppingCartService, ShoppingCartService>();
+        services.AddScoped<IUserService, UserService>();
 
         return services;
     }
@@ -50,6 +51,7 @@ public static class DependencyInjection
         services.AddAutoMapper(typeof(ProductMap).Assembly);
         services.AddAutoMapper(typeof(CategoryMap).Assembly);
         services.AddAutoMapper(typeof(OrderMap).Assembly);
+        services.AddAutoMapper(typeof(UserMap).Assembly);
 
         return services;
     }

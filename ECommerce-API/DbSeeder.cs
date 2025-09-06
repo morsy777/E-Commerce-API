@@ -18,14 +18,14 @@ namespace E_Commerce.API.Seed
 
             await context.Database.MigrateAsync();
 
-            // ✅ Roles
+            // Roles
             if (!await roleManager.Roles.AnyAsync())
             {
                 await roleManager.CreateAsync(new IdentityRole("Admin"));
                 await roleManager.CreateAsync(new IdentityRole("Customer"));
             }
 
-            // ✅ Admin User
+            // Admin User
             ApplicationUser? adminUser;
             if (!await userManager.Users.AnyAsync())
             {
@@ -45,7 +45,7 @@ namespace E_Commerce.API.Seed
                 adminUser = await userManager.FindByNameAsync("admin");
             }
 
-            // ✅ Customers
+            // Customers
             var customers = new List<ApplicationUser>();
             string[] customerNames = { "Ahmed", "Omar", "Hossam", "Mostafa" };
             foreach (var name in customerNames)
@@ -67,7 +67,7 @@ namespace E_Commerce.API.Seed
                 customers.Add(user);
             }
 
-            // ✅ Shopping Carts for all users
+            // Shopping Carts for all users
             if (!await context.ShoppingCarts.AnyAsync())
             {
                 var allUsers = customers.Append(adminUser);
@@ -81,7 +81,7 @@ namespace E_Commerce.API.Seed
                 await context.SaveChangesAsync();
             }
 
-            // ✅ Categories
+            // Categories
             if (!await context.Categories.AnyAsync())
             {
                 var categories = new List<Category>
@@ -95,7 +95,7 @@ namespace E_Commerce.API.Seed
                 context.Categories.AddRange(categories);
                 await context.SaveChangesAsync();
 
-                // ✅ Products
+                // Products
                 if (!await context.Products.AnyAsync())
                 {
                     var clothes = categories.First(c => c.Title == "Clothes").CategoryId;
@@ -117,7 +117,7 @@ namespace E_Commerce.API.Seed
                 }
             }
 
-            // ✅ Orders + OrderItems
+            // Orders + OrderItems
             if (!await context.Orders.AnyAsync())
             {
                 var customer1 = customers.First();
@@ -143,7 +143,7 @@ namespace E_Commerce.API.Seed
                 await context.SaveChangesAsync();
             }
 
-            // ✅ Reviews
+            // Reviews
             if (!await context.Reviews.AnyAsync())
             {
                 var customer2 = customers.Skip(1).First();
